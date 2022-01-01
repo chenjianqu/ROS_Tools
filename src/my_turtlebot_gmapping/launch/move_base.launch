@@ -1,0 +1,16 @@
+<launch>
+
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen" clear_params="true">
+	<!-- 通用配置文件，-->
+    <rosparam file="$(find my_turtlebot_gmapping)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
+	<!-- 通用配置文件 -->
+    <rosparam file="$(find my_turtlebot_gmapping)/config/costmap_common_params.yaml" command="load" ns="local_costmap" />
+	<!-- 本地规划配置文件，用于存储本地代价地图的配置参数-->
+    <rosparam file="$(find my_turtlebot_gmapping)/config/local_costmap_params.yaml" command="load" />
+	<!-- 全局规划配置文件，用于存储配置全局代价地图的参数 -->
+    <rosparam file="$(find my_turtlebot_gmapping)/config/global_costmap_params.yaml" command="load" />
+	<!-- 本地规划器，根据规划的全局路径计算发布给机器人的速度控制指令 -->
+    <rosparam file="$(find my_turtlebot_gmapping)/config/base_local_planner_params.yaml" command="load" />
+  </node>
+  
+</launch>

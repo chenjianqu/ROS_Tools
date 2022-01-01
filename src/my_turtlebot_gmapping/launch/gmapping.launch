@@ -1,0 +1,38 @@
+<launch>
+    <arg name="scan_topic" default="scan" />
+
+    <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen" clear_params="true">
+        <param name="odom_frame" value="odom"/>  <!-- 里程计坐标系 -->
+        <param name="map_update_interval" value="5.0"/> <!-- 地图更新频率 -->
+        <!-- Set maxUrange < actual maximum range of the Laser -->
+        <param name="maxRange" value="5.0"/> <!-- 传感器的最大范围 -->
+        <param name="maxUrange" value="4.5"/>  <!-- 激光可探测的最大范围 -->
+        <param name="sigma" value="0.05"/>  <!-- 端点匹配的标准差 -->
+        <param name="kernelSize" value="1"/>  <!-- 在对应的内核中进行查找 -->
+        <param name="lstep" value="0.05"/>  <!-- 平移过程中的优化步长 -->
+        <param name="astep" value="0.05"/>  <!-- 旋转过程中的优化步长 -->
+        <param name="iterations" value="5"/>  <!-- 扫描匹配的迭代次数 -->
+        <param name="lsigma" value="0.075"/>  <!-- 似然计算的激光标准差 -->
+        <param name="ogain" value="3.0"/>  <!-- 似然计算时用于平滑重采样效果 -->
+        <param name="lskip" value="0"/>  <!-- 每次扫描跳过的光束数 -->
+        <param name="srr" value="0.01"/>  <!-- 平移函数rho/rho ,平移时的里程误差-->
+        <param name="srt" value="0.02"/>  <!-- 旋转函数rho/theta,平移时的里程误差 -->
+        <param name="str" value="0.01"/>  <!-- 平移函数theta/rho,旋转时的里程误差 -->
+        <param name="stt" value="0.02"/>  <!-- 旋转函数theta/theta,旋转时的里程误差 -->
+        <param name="linearUpdate" value="0.5"/>  <!-- 机器人每平移该距离后处理一次激光扫描数据 -->
+        <param name="angularUpdate" value="0.436"/>  <!-- 机器人每旋转该弧度后处理一次激光扫描数据 -->
+        <param name="temporalUpdate" value="-1.0"/>  <!-- 如果最新扫描处理的速度比更新的速度慢，则处理一次扫描，该值为负数时关闭基于时间的更新 -->
+        <param name="resampleThreshold" value="0.5"/>  <!-- 基于Neff的重采样阈值 -->
+        <param name="particles" value="80"/>  <!-- 滤波器中的粒子数量 -->
+        <param name="xmin" value="-1.0"/>  <!-- 地图x向的初始最小尺寸 -->
+        <param name="ymin" value="-1.0"/>  <!-- 地图y向的初始最小尺寸 -->
+        <param name="xmax" value="1.0"/>  <!-- 地图x向的初始最大尺寸 -->
+        <param name="ymax" value="1.0"/>  <!-- 地图y向的初始最大尺寸 -->
+        <param name="delta" value="0.05"/>  <!-- 地图分辨率 -->
+        <param name="llsamplerange" value="0.01"/>  <!-- 似然计算的平移采样距离 -->
+        <param name="llsamplestep" value="0.01"/>  <!-- 似然计算的平移采样步长 -->
+        <param name="lasamplerange" value="0.005"/>  <!-- 似然计算的旋转采样距离 -->
+        <param name="lasamplestep" value="0.005"/>  <!-- 似然计算的旋转采样步长 -->
+        <remap from="scan" to="$(arg scan_topic)"/>  <!--  -->
+    </node>
+</launch>
