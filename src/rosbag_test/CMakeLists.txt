@@ -34,3 +34,8 @@ include_directories(
 add_executable(rosbag_test src/main.cpp)
 target_link_libraries(rosbag_test ${catkin_LIBRARIES} ${OpenCV_LIBS})
 
+
+add_executable(get_image_from_bag src/get_image_from_bag.cpp)
+target_link_libraries(get_image_from_bag ${catkin_LIBRARIES} ${OpenCV_LIBS})
+
+
