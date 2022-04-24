@@ -23,6 +23,7 @@ find_package(catkin REQUIRED COMPONENTS
         tf
         cv_bridge
         image_transport)
+
 include_directories(${catkin_INCLUDE_DIRS})
 
 find_package(OpenCV 3.4 REQUIRED)
