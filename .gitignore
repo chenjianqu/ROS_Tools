@@ -2,3 +2,13 @@
 /devel/
 /*/*/cmake-build-debug/
 /*/*/*/cmake-build-debug/
+.idea/
+/*/.idea/
+/*/*/.idea/
+/*/*/*/.idea/
+bin/
+/*/bin/
+/*/*/bin/
+/*/*/*/bin/
+
+

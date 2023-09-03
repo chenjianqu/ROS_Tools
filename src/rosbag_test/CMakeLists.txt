@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0.2)
 project(rosbag_test)
 
-add_compile_options(-std=c++14)
+add_compile_options(-std=c++17)
 
 find_package(catkin REQUIRED COMPONENTS
         cv_bridge
@@ -37,5 +37,8 @@ target_link_libraries(rosbag_test ${catkin_LIBRARIES} ${OpenCV_LIBS})
 
 add_executable(get_image_from_bag src/get_image_from_bag.cpp)
 target_link_libraries(get_image_from_bag ${catkin_LIBRARIES} ${OpenCV_LIBS})
+
+add_executable(get_stereo_from_bag src/get_stereo_from_bag.cpp)
+target_link_libraries(get_stereo_from_bag ${catkin_LIBRARIES} ${OpenCV_LIBS})
 
 

@@ -1,11 +1,8 @@
-//
-// Created by chen on 2022/1/4.
-//
-
 #include <queue>
 #include <map>
 #include <thread>
 #include <mutex>
+#include <filesystem>
 
 #include <ros/ros.h>
 #include <rosbag/bag.h>
@@ -14,11 +11,15 @@
 #include <cv_bridge/cv_bridge.h>
 #include <opencv2/opencv.hpp>
 
+#include "def.h"
+
 using namespace std;
+namespace fs=std::filesystem;
+
 
 struct SegImage{
-    cv::Mat img0,img0_seg,img1,img1_seg;
-    double img0_time,img0_seg_time,img1_time,img1_seg_time;
+    cv::Mat img0,img1;
+    double img0_time,img1_time;
 };
 
 int main(int argc, char **argv)
@@ -30,6 +31,14 @@ int main(int argc, char **argv)
     }
     else{
         file_name=argv[1],save_dir = argv[2];
+    }
+
+    fs::path left_save_path = fs::path(save_dir)/"cam0";
+    fs::path right_save_path = fs::path(save_dir)/"cam1";
+
+    if(!fs::is_directory(left_save_path) || !fs::is_directory(right_save_path)){
+        cout<<left_save_path<<" or "<<right_save_path<<" is not a directory"<<endl;
+        return -1;
     }
 
     ros::init(argc, argv, "rosbag_test");
@@ -44,10 +53,8 @@ int main(int argc, char **argv)
     }
 
     std::vector<std::string> topics; //设置需要遍历的topic
-    topics.emplace_back("/cam0/image_raw");
-    topics.emplace_back("/cam0/segmentation");
-    topics.emplace_back("/cam1/image_raw");
-    topics.emplace_back("/cam1/segmentation");
+    topics.emplace_back("/zed_cam/cam0");
+    topics.emplace_back("/zed_cam/cam1");
 
     rosbag::View view(bag, rosbag::TopicQuery(topics));; // 读指定的topic，如果全读，第二个参数不写，如下
 
@@ -58,27 +65,22 @@ int main(int argc, char **argv)
         auto topic=it->getTopic();
         sensor_msgs::Image::ConstPtr img_sensor=it->instantiate<sensor_msgs::Image>();
         double time=img_sensor->header.stamp.toSec();
+        int seq_id = img_sensor->header.seq;
         cv_bridge::CvImageConstPtr ptr=cv_bridge::toCvShare(img_sensor,sensor_msgs::image_encodings::BGR8);
 
-        if(topic=="/cam0/image_raw"){
+        string seq_id_str = PadNumber(seq_id,6);
+
+        if(topic=="/zed_cam/cam0"){
             img.img0=ptr->image.clone();
             img.img0_time=time;
-            cv::imwrite(save_dir+"/"+to_string(time)+"_cam0.png",img.img0);
+            cv::imwrite((left_save_path / (seq_id_str+".png")).string(),img.img0);
+            cout<<(left_save_path / (seq_id_str+".png")).string()<<endl;
         }
-        else if(topic=="/cam1/image_raw"){
+        else if(topic=="/zed_cam/cam1"){
             img.img1=ptr->image.clone();
             img.img1_time=time;
-            cv::imwrite(save_dir+"/"+to_string(time)+"_cam1.png",img.img1);
-        }
-        else if(topic=="/cam0/segmentation"){
-            img.img0_seg=ptr->image.clone();
-            img.img0_seg_time=time;
-            cv::imwrite(save_dir+"/"+to_string(time)+"_seg0.png",img.img0_seg);
-        }
-        else if(topic=="/cam1/segmentation"){
-            img.img1_seg=ptr->image.clone();
-            img.img1_seg_time=time;
-            cv::imwrite(save_dir+"/"+to_string(time)+"_seg1.png",img.img1_seg);
+            cv::imwrite((right_save_path / (seq_id_str+".png")).string(),img.img1);
+            cout<<(right_save_path / (seq_id_str+".png")).string()<<endl;
         }
         cout<<time<<"  "<<topic<<endl;
     }
