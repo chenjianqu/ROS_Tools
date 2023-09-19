@@ -2,11 +2,13 @@ cmake_minimum_required(VERSION 3.0.2)
 project(opencv_test)
 
 set(CMAKE_BUILD_TYPE "Release")
-add_compile_options(-std=c++17)
+
+
 
 #-DEIGEN_USE_MKL_ALL")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wall -g -no-pie -fno-pie -fPIC")
 set(CMAKE_CXX_FLAGS "-O3 -Wall -g -no-pie -fno-pie -fPIC")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
 
 #set(CMAKE_CXX_FLAGS   "-fPIC")
 #set(CMAKE_C_FLAGS   "-fPIC")
@@ -54,11 +56,13 @@ aux_source_directory(src src_SOURCES)
 message("${src_SOURCES}")
 
 
-add_executable(write_video src/write_video.cpp)
-target_link_libraries(write_video ${catkin_LIBRARIES} ${OpenCV_LIBS})
+#add_executable(write_video src/write_video.cpp)
+#target_link_libraries(write_video ${catkin_LIBRARIES} ${OpenCV_LIBS})
 
-add_executable(read_video src/read_video.cpp)
-target_link_libraries(read_video ${catkin_LIBRARIES} ${OpenCV_LIBS})
+#add_executable(read_video src/read_video.cpp)
+#target_link_libraries(read_video ${catkin_LIBRARIES} ${OpenCV_LIBS})
 
-add_executable(sub_image src/sub_image.cpp)
-target_link_libraries(sub_image ${catkin_LIBRARIES} ${OpenCV_LIBS})
+#add_executable(sub_image src/sub_image.cpp)
+#target_link_libraries(sub_image ${catkin_LIBRARIES} ${OpenCV_LIBS})
+
+

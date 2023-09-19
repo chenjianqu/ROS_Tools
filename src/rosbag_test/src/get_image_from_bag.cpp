@@ -31,8 +31,10 @@ int main(int argc, char **argv)
     else{
         file_name=argv[1],save_dir = argv[2];
     }
-
-    ros::init(argc, argv, "rosbag_test");
+    std::string time_str = std::to_string(
+            std::chrono::duration_cast<std::chrono::milliseconds>(
+                    std::chrono::system_clock::now().time_since_epoch()).count());
+    ros::init(argc, argv, "get_image_from_bag_"+time_str);
     ros::NodeHandle n("~");
     ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Info);
 

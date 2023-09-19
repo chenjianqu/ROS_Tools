@@ -1,35 +1,39 @@
 cmake_minimum_required(VERSION 3.0.2)
 project(tf_test)
 
+## Compile as C++11, supported in ROS Kinetic and newer
 add_compile_options(-std=c++11)
 
-
+## Find catkin macros and libraries
+## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
+## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-        roscpp
-        rospy
-        std_msgs
-        tf
+  roscpp
+  rospy
+  std_msgs
+  tf
         tf_conversions
 )
 
 catkin_package(
+#  INCLUDE_DIRS include
+#  LIBRARIES tf_test
+#  CATKIN_DEPENDS roscpp rospy std_msgs tf
+#  DEPENDS system_lib
 )
 
 
-set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
-find_package(Eigen3)
-include_directories( ${EIGEN3_INCLUDE_DIR})
 
-find_package(OpenCV 3 REQUIRED)
-include_directories(${OpenCV_INCLUDE_DIRS})
-message("OpenCV DIR:  ${OpenCV_DIR}")
-message("OpenCV_INCLUDE_DIRS:  ${OpenCV_INCLUDE_DIRS}")
-message("OpenCV OpenCV_VERSION:  ${OpenCV_VERSION}")
 
+find_package(OpenCV REQUIRED)
+find_package(Eigen3 3 REQUIRED)
 
 include_directories(
         include
         ${catkin_INCLUDE_DIRS}
+        ${EIGEN3_LIBS}
+        ${OpenCV_INCLUDE_DIRS}
+        "/usr/local/include/eigen3/"
 )
 
 
@@ -42,13 +46,8 @@ add_executable(tf_test src/tf_test.cpp)
 target_link_libraries(tf_test
    ${catkin_LIBRARIES})
 
-add_executable(write_tf_once src/write_tf_once.cpp)
-target_link_libraries(write_tf_once
-        ${catkin_LIBRARIES}
-        ${Libs})
-
-add_executable(write_tf_stamp src/write_tf_stamp.cpp )
-target_link_libraries(write_tf_stamp
+add_executable(write_tf src/write_tf.cpp)
+target_link_libraries(write_tf
         ${catkin_LIBRARIES}
         ${Libs})
 

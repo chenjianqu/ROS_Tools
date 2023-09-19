@@ -32,8 +32,11 @@ int main(int argc, char **argv)
     else{
         file_name=argv[1];
     }
+    std::string time_str = std::to_string(
+            std::chrono::duration_cast<std::chrono::milliseconds>(
+                    std::chrono::system_clock::now().time_since_epoch()).count());
 
-    ros::init(argc, argv, "rosbag_test");
+    ros::init(argc, argv, "rosbag_test_"+time_str);
     ros::NodeHandle n("~");
     ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Info);
 
