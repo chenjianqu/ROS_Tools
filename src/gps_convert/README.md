@@ -24,6 +24,22 @@ rosrun gps_convert gps_pose ${gps_topic} ${save_path}
 
 
 
+### convert_kitti_gps.cpp
+
+```shell
+rosrun gps_convert convert_kitti_gps ${read_path} ${save_path}
+```
+
+例子：
+
+```shell
+read_path=/media/cjq/新加卷1/datasets/kitti/raw/2011_09_26_drive_0001_extract/2011_09_26/2011_09_26_drive_0001_extract/oxts/data
+
+save_path=/media/cjq/新加卷1/datasets/kitti/raw/2011_09_26_drive_0001_extract/2011_09_26/2011_09_26_drive_0001_extract/oxts/poses.txt
+
+rosrun gps_convert convert_kitti_gps ${read_path} ${save_path}
+```
+
 
 
 ### gps_record

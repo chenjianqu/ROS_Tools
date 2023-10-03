@@ -1,9 +1,7 @@
 cmake_minimum_required(VERSION 3.0.2)
 project(gps_convert)
 
-
 set(CMAKE_CXX_STANDARD 17)
-
 
 find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
@@ -13,22 +11,16 @@ find_package(catkin REQUIRED COMPONENTS
 		rosbag
 )
 
-
 catkin_package(
 )
 
-
 include_directories(
-# include
   ${catkin_INCLUDE_DIRS}
 	src/
 )
 
-
-
 find_package( OpenCV 3.4.16 REQUIRED )
 include_directories( ${OpenCV_INCLUDE_DIRS} )
-
 
 
 add_library(GeographicLib SHARED
@@ -39,15 +31,24 @@ add_library(GeographicLib SHARED
         src/GeographicLib/LocalCartesian.cpp
          )
 
+set(THIRTY_LIBS
+		${catkin_LIBRARIES}
+		${OpenCV_LIBS}
+		glog
+)
+
 
 add_executable(gps_pose src/gps_pose.cpp )
-target_link_libraries(gps_pose ${catkin_LIBRARIES} GeographicLib ${OpenCV_LIBS})
+target_link_libraries(gps_pose ${THIRTY_LIBS} GeographicLib)
+
+add_executable(convert_kitti_gps src/convert_kitti_gps.cpp )
+target_link_libraries(convert_kitti_gps ${THIRTY_LIBS} GeographicLib)
 
 add_executable(gps_record src/gps_record.cpp )
-target_link_libraries(gps_record ${catkin_LIBRARIES} ${OpenCV_LIBS})
+target_link_libraries(gps_record ${THIRTY_LIBS} GeographicLib)
 
 add_executable(write_gps_from_bag src/write_gps_from_bag.cpp )
-target_link_libraries(write_gps_from_bag ${catkin_LIBRARIES} ${OpenCV_LIBS} GeographicLib)
+target_link_libraries(write_gps_from_bag ${THIRTY_LIBS} GeographicLib)
 
 
 
