@@ -11,12 +11,18 @@ find_package(catkin REQUIRED COMPONENTS
         rosbag
         )
 
-find_package(OpenCV 3.4 REQUIRED)
+find_package(OpenCV 4 REQUIRED)
 
 find_package(spdlog REQUIRED)
 include_directories(${spdlog_INCLUDE_DIRS})
 message("spdlog version:${spdlog_VERSION}")
 message("spdlog dir:${spdlog_DIR}")
+
+find_package(PCL 1.8 REQUIRED)
+include_directories(${PCL_INCLUDE_DIRS})
+link_directories(${PCL_LIBRARY_DIRS})
+add_definitions(${PCL_DEFINITIONS})
+
 
 
 catkin_package(
@@ -40,6 +46,7 @@ set(THIRY_LIBS fmt
         ${spdlog_LIBRARIES}
         -lglog
         -lgflags
+        ${PCL_LIBRARIES}
         )
 
 add_executable(rosbag_test src/main.cpp)
@@ -71,5 +78,8 @@ target_link_libraries(get_odom_from_bag ${THIRY_LIBS})
 
 add_executable(get_image_time_stamp src/get_image_time_stamp.cpp)
 target_link_libraries(get_image_time_stamp ${THIRY_LIBS})
+
+add_executable(cvt_met_to_bag src/cvt_met_to_bag.cpp src/rtkcmn.cpp)
+target_link_libraries(cvt_met_to_bag ${THIRY_LIBS})
 
 
